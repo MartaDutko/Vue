@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .notAuthorized {
+        border: 1px solid red;
+    }
+
+    .wrapper {
+        width: 30%;
+        padding: 10%;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+
+    input {
+        width: 80%;
+    }
+</style>
+
+<body>
+    <p>Задача 5. Додаток містить масив об’єктів (логін, пароль) -- інсуючі логіни і паролі. Користувач вводить логін і
+        пароль, а програма повідомляє чи може користувач бути авторизованим (чи є він одним з масиву).</p>
+
+    <div id="app">
+        <p>{{message}}</p>
+        <div class="wrapper">
+            <label>Login
+                <input type="text" v-model="login" v-bind:class="{notAuthorized:notAuthorizedColor}">
+            </label>
+            <label>Password
+                <input type="password" v-model="password" v-bind:class="{notAuthorized:notAuthorizedColor}">
+            </label>
+            <button @click="checkUser">click</button>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const authorizedUsers = [
+            {
+                login: 'user1',
+                password: '1234'
+            },
+            {
+                login: 'user2',
+                password: '5678'
+            },
+            {
+                login: 'user3',
+                password: '9123'
+            }
+        ]
+        const app = createApp({
+            data() {
+                return {
+                    password: null,
+                    login: null,
+                    message: 'Sing in:',
+                    notAuthorizedColor: false,
+                }
+            },
+            methods: {
+                checkUser() {
+                    const user = authorizedUsers.find((el) => el.login === this.login && el.password === this.password)
+                    if (user) {
+                        this.message = 'Успішний вхід'
+                        this.notAuthorizedColor = false
+
+                    }
+                    else {
+                        this.message = 'Не вірний логін/пароль'
+                        this.notAuthorizedColor = true
+
+                    }
+                    this.login = null
+                    this.password = null
+                }
+            }
+        })
+        app.mount('#app')
+
+    </script>
+</body>
+
+</html>

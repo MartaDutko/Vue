@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <p>Задача 4. “Рахунок у банку”</p>
+    <p>Вимоги:</p>
+    <li>Спочатку сума дорівнює 0грн. Змінити суму у гривнях можна або зарахуванням на рахунок, або зняттям.</li>
+    <li>Сума автоматично переводиться у долари та євро (фіксований курс задається у data).</li>
+    <li>можливість зарахувати суму (контролювати, щоб не була від’ємною)</li>
+    <li>можливість зняти (щоб не можна зняти більше ніж є на рахунку)</li>
+    <li>при виконанні зняття і зарахування коштів вираховувати 3% від суми (відображати кількість відсотків автоматично)
+    </li>
+    <p>При зміні суми :</p>
+    <li>якщо було зняття, то суму відоражати червоним</li>
+    <li>якщо було зарахування, то суму відображати зеленим</li>
+    <p>Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим</p>
+    <hr>
+
+    <div id="app">
+        <div><span v-bind:style="{color: colorRate}">Сума на рахунку: {{fixedSum(sumInAccount)}}</span></div>
+        <div><span>Зарахувати на рахунок: </span> <input type="number" v-model.lazy="addMoney"> <button
+                @click="addToAccount">Зарахувати</button>
+        </div>
+        <div><span>Зняти з рахунку: </span> <input type="number" v-model.lazy="getMoney"> <button
+                @click="getToAccount">Зняти</button></div>
+        <p>Відсоток за обслуговування: {{fixedSum(rateSum)}} грн.</p>
+        <hr>
+        <p>Сума в доларах:$ {{sumInDollarInAccount}}</p>
+        <p>Сума в євро:Є {{sumInEuroInAccount}}</p>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const app = createApp({
+
+            data() {
+                return {
+                    sumInAccount: 0,
+                    addMoney: 0,
+                    getMoney: 0,
+                    rate: 3,
+                    rateSum: 0,
+                    colorRate: 'red',
+                    dolarRate: 39,
+                    euroRare: 40,
+                }
+            },
+
+            methods: {
+                addToAccount() {
+                    if (this.addMoney > 0) {
+                        this.rateSum = (this.addMoney / 100) * this.rate
+                        this.sumInAccount += (this.addMoney - this.rateSum)
+                        // ТЗ: Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим
+                        if (this.sumInAccount <= 100) {
+                            this.colorRate = 'red'
+                        }
+                        else {
+                            this.colorRate = 'green'
+                        }
+                    }
+                },
+                getToAccount() {
+                    if (this.getMoney <= this.sumInAccount) {
+                        this.rateSum = (this.getMoney / 100) * this.rate
+                        this.sumInAccount -= this.getMoney
+                        this.sumInAccount -= this.rateSum
+                        this.colorRate = 'red'
+                    }
+                },
+                // Метод округлює число до 2 символів після крапки
+                fixedSum(sumValue) {
+                    return sumValue.toFixed(2)
+                }
+            },
+
+            computed: {
+                sumInDollarInAccount() {
+                    return (this.sumInAccount / this.dolarRate).toFixed(2)
+                },
+                sumInEuroInAccount() {
+                    return (this.sumInAccount / this.euroRare).toFixed(2)
+                },
+            }
+        })
+        app.mount("#app")
+
+    </script>
+</body>
+
+</html>

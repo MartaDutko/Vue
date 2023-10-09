@@ -19,8 +19,8 @@
         …).</p>
     <div id="app">
         <input type="number" v-model.lazy="numberMounth">
-        <p>{{seasonClothes}}</p>
-        <img v-bind:src="seasonPicture">
+        <p>{{recommendedClothing}}</p>
+        <img :src="seasonPicture">
     </div>
 
     <script>
@@ -30,42 +30,53 @@
             data() {
                 return {
                     numberMounth: 0,
-                    seasonClothes: null,
-                    seasonPicture: null,
                 }
             },
-            methods: {
-                userClothes() {
+            computed: {
+                recommendedClothing() {
                     // зима
                     if (this.numberMounth === 12 || this.numberMounth == 1 || this.numberMounth == 2) {
-                        this.seasonClothes = 'Пуховик'
-                        this.seasonPicture = 'https://hips.hearstapps.com/hmg-prod/images/stunning-sunrise-light-among-the-trees-bled-royalty-free-image-1695483713.jpg'
+                        return 'Пуховик'
                     }
                     // весна
                     else if (this.numberMounth >= 3 && this.numberMounth <= 5) {
-                        this.seasonClothes = 'Плащ'
-                        this.seasonPicture = 'https://media.cnn.com/api/v1/images/stellar/prod/210316134609-01-wisdom-project-spring.jpg?q=w_4000,h_2250,x_0,y_0,c_fill'
+                        return 'Плащ'
                     }
                     // літо
                     else if (this.numberMounth >= 6 && this.numberMounth <= 8) {
-                        this.seasonClothes = 'Футболка'
-                        this.seasonPicture = 'https://cdn.firstcry.com/education/2022/04/29104151/1007648908.jpg'
+                        return 'Футболка'
                     }
                     // осінь
                     else if (this.numberMounth >= 9 && this.numberMounth <= 11) {
-                        this.seasonClothes = 'Пальто'
-                        this.seasonPicture = 'https://www.bhg.com/thmb/13P3g3CziImBt7Ohnd1Plk0Q6vc=/2000x0/filters:no_upscale():strip_icc()/brightly-colored-trees-fall-foliage-new-england-98776a94d3244c7cb0aa83c6c8ce45e8.jpg'
+                        return 'Пальто'
                     }
                     // некоректне введення
-                    else{
-                        this.seasonClothes = null
-                        this.seasonPicture = null
+                    else {
+                        return null
+                    }
+                },
+                seasonPicture() {
+                    // зима
+                    if (this.numberMounth === 12 || this.numberMounth == 1 || this.numberMounth == 2) {
+                        return 'https://hips.hearstapps.com/hmg-prod/images/stunning-sunrise-light-among-the-trees-bled-royalty-free-image-1695483713.jpg'
+                    }
+                    // весна
+                    else if (this.numberMounth >= 3 && this.numberMounth <= 5) {
+                        return 'https://media.cnn.com/api/v1/images/stellar/prod/210316134609-01-wisdom-project-spring.jpg?q=w_4000,h_2250,x_0,y_0,c_fill'
+                    }
+                    // літо
+                    else if (this.numberMounth >= 6 && this.numberMounth <= 8) {
+                        return 'https://cdn.firstcry.com/education/2022/04/29104151/1007648908.jpg'
+                    }
+                    // осінь
+                    else if (this.numberMounth >= 9 && this.numberMounth <= 11) {
+                        return 'https://www.bhg.com/thmb/13P3g3CziImBt7Ohnd1Plk0Q6vc=/2000x0/filters:no_upscale():strip_icc()/brightly-colored-trees-fall-foliage-new-england-98776a94d3244c7cb0aa83c6c8ce45e8.jpg'
+                    }
+                    // некоректне введення
+                    else {
+                        return null
                     }
                 }
-            },
-            // відслідковуємо чи користувач зиінив значення в input
-            watch: {
-                numberMounth: 'userClothes'
             }
         })
         app.mount("#app")

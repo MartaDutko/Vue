@@ -24,7 +24,7 @@
     <hr>
 
     <div id="app">
-        <div><span v-bind:style="{color: colorRate}">Сума на рахунку: {{fixedSum(sumInAccount)}}</span></div>
+        <div><span :style="{color: colorRate}">Сума на рахунку: {{fixedSum(sumInAccount)}}</span></div>
         <div><span>Зарахувати на рахунок: </span> <input type="number" v-model.lazy="addMoney"> <button
                 @click="addToAccount">Зарахувати</button>
         </div>

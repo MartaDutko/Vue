@@ -38,10 +38,10 @@
         <p>{{message}}</p>
         <div class="wrapper">
             <label>Login
-                <input type="text" v-model="login" v-bind:class="{notAuthorized:notAuthorizedColor}">
+                <input type="text" v-model="login" :class="{notAuthorized:notAuthorizedColor}">
             </label>
             <label>Password
-                <input type="password" v-model="password" v-bind:class="{notAuthorized:notAuthorizedColor}">
+                <input type="password" v-model="password" :class="{notAuthorized:notAuthorizedColor}">
             </label>
             <button @click="checkUser">click</button>
         </div>

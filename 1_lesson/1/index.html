@@ -25,24 +25,24 @@
     </div>
     <script>
         const { createApp } = Vue
+        const passengersPerBus=20
+        const bottlesPerPassenger=2
+        const sandwichesPerPassenger=3
         const app = createApp({
             data() {
                 return {
                 countPassengers:0,
-                passengersPerBus:20,
-                bottlesPerPassenger:2,
-                sandwichesPerPassenger:3
                 }
             },
             computed:{
                 countBus(){
-                return Math.ceil(this.countPassengers / this.passengersPerBus)
+                return Math.ceil(this.countPassengers / passengersPerBus)
                 },
                 countBottleWater(){
-                return Math.ceil(this.countPassengers * this.bottlesPerPassenger)
+                return this.countPassengers * bottlesPerPassenger
                 },
                 countSandwiches (){
-                return Math.ceil(this.countPassengers * this.sandwichesPerPassenger)
+                return this.countPassengers * sandwichesPerPassenger
                 }
             }
         })

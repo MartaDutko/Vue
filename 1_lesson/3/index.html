@@ -26,8 +26,8 @@
                 }
             },
             methods:{
-                getRandomNumber(){
-                    this.randomNumber =this.start + Math.floor(Math.random() * this.end)
+                getRandomNumber(){(
+                    this.randomNumber =this.start + Math.floor(Math.random() * (this.end - this.start+1)))
                     this.start=0
                     this.end=0
                 }

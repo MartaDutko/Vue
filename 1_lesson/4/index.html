@@ -24,13 +24,13 @@
     <hr>
 
     <div id="app">
-        <div><span :style="{color: colorRate}">Сума на рахунку: {{fixedSum(sumInAccount)}}</span></div>
+        <div><span :style="{color: colorRate}">Сума на рахунку: {{sumInAccount}}</span></div>
         <div><span>Зарахувати на рахунок: </span> <input type="number" v-model.lazy="addMoney"> <button
                 @click="addToAccount">Зарахувати</button>
         </div>
         <div><span>Зняти з рахунку: </span> <input type="number" v-model.lazy="getMoney"> <button
                 @click="getToAccount">Зняти</button></div>
-        <p>Відсоток за обслуговування: {{fixedSum(rateSum)}} грн.</p>
+        <p>Відсоток за обслуговування: {{rateSum}} грн.</p>
         <hr>
         <p>Сума в доларах:$ {{sumInDollarInAccount}}</p>
         <p>Сума в євро:Є {{sumInEuroInAccount}}</p>
@@ -75,10 +75,6 @@
                         this.colorRate = 'red'
                     }
                 },
-                // Метод округлює число до 2 символів після крапки
-                fixedSum(sumValue) {
-                    return sumValue.toFixed(2)
-                }
             },
 
             computed: {

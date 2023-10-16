@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body{
+            background: rgb(250, 235, 215);
+            background: linear-gradient(90deg, rgba(250, 235, 215, 1) 64%, rgba(0, 0, 0, 0.455641631652661) 100%);
+        }
+        #app{
+            width: 100%;
+            height: 100vh;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 50%; 
+        }
+        .businessClassImg{
+            color: white;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url("https://img.freepik.com/fotos-premium/cabina-jet-privado-o-clase-ejecutiva-aviones-ia-generativa_123447-14832.jpg");
+        }
+        .economClassImg{
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url("https://s3.envato.com/files/f7f872e7-c441-49da-bc72-6944077a9641/inline_image_preview.jpg");
+        }
+    </style>
+</head>
+
+<body>
+    <p>Задача 2. З випадаючого списку вибираємо клас квитка у літаку. Якщо </p>
+    <ol>
+        <li>бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то запропонувати закуску
+            (так/ні)), на фоні зображення бізнес кают </li>
+        <li> економ – виводимо елементи для вибору типу пива і чипсів, на фоні хмарки.</li>
+    </ol>
+
+
+    <div id="app">
+        <div class="wrapper" :class="checkss">
+
+            <!-- Вибір класу -->
+            <label>Оберіть клас:</label>
+            <select v-model="selectedClass" >
+                <option disabled selected>Оберіть варіант</option>
+                <option value="business">Бізнес</option>
+                <option value="econom">Еком</option>
+            </select>
+            <br>
+
+            <!-- Вибраний блок бізнес -->
+            <template v-if="selectedClass==='business'">
+                <!--Вибір коньяка -->
+                <label>
+                    <input type="checkbox" value="cognac" v-model="checkCognac">Коньяк
+                </label><br>
+                <!-- Вибір снеків -->
+                <template v-if="checkCognac">
+                    <label>
+                        <input type="radio" name="offerSnack" value="yes">Так
+                    </label><br>
+                    <label>
+                        <input type="radio" name="offerSnack" value="no">Ні
+                    </label><br>
+                </template>
+                <!--Вибір газети -->
+                <label>
+                    <input type="checkbox" value="newspaper">Газета
+                </label><br>
+
+                <!-- Вибраний блок економ -->
+            </template>
+            <template v-else-if="selectedClass==='econom'">
+                <label>
+                    <input type="checkbox" value="beer">Пиво
+                </label><br>
+                <label>
+                    <input type="checkbox" value="chips">Чипси
+                </label><br>
+            </template>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        const app = createApp({
+
+            data() {
+                return {
+                    selectedClass: null,
+                    checkCognac: null,
+                }
+            },
+            computed: {
+                checkss(){
+                    if(this.selectedClass === 'business')return 'businessClassImg'
+                    else if(this.selectedClass === 'econom') return 'economClassImg'
+                }
+            }
+
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

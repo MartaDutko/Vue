@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+    body{
+        background: rgb(250, 235, 215);
+            background: linear-gradient(90deg, rgba(250, 235, 215, 1) 64%, rgba(0, 0, 0, 0.455641631652661) 100%);
+    }
+    #app{
+        margin: 20px 0 0 20px;
+        color: white;
+        background-color: rgb(49, 49, 49);
+
+    }
+    .wrapper{
+        padding: 10px 0 20px 10px;
+    }
+    .block__tittle{
+        display: flex;
+        margin: 0 0 10px 0;
+    }
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 0 10px 0 0;
+    }
+    p{
+        margin: 0;
+        padding: 0;
+    }
+    a{
+        color: rgb(0, 145, 255);
+        text-decoration: none;
+    }
+    .block__link>a{
+        color: rgb(153, 153, 153);
+    }
+    .block__description>a{
+        font-size: 25px;
+    }
+</style>
+</head>
+
+<body>
+    <p>Самостійно сформуйте масив даних та виведіть фрагмент на зразок поданого (дані не обов’язково повинні співпадати)
+    </p>
+    <div id="app">
+        <div class="wrapper" v-for="(framework,index) in frameworksList" key="framework.id" >
+            <div class="block__tittle">
+                <img :src="framework.img">
+                <div class="block__link">
+                    <p>{{framework.name}}</p>
+                    <a :href="framework.url">{{framework.url}} </a>
+                </div>
+            </div>
+            <div class="block__description">
+                <a :href="framework.url">{{framework.tittle}} </a>
+                <p>{{framework.description}}</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const frameworks = [
+            {
+                id:Symbol(),
+                img: 'https://www.designil.com/wp-content/uploads/2018/10/bootstrap-css.png',
+                name: 'Get Bootstrap',
+                url: 'https://getbootstrap.com/',
+                tittle: 'Bootstrap · The most popular HTML, CSS, and JS library',
+                description: 'Bootstrap utilizes Sass for a modular and customizable architecture. Import only the components you need, enable global options like gradients and shadows, and ...'
+            },
+            {
+                id:Symbol(),
+                img: 'https://assets.bitdegree.org/online-learning-platforms/storage/media/2019/11/Screenshot-2019-11-07-at-13.18.31-1-300x252.png',
+                name: 'Vue.js',
+                url: 'https://vuejs.org/',
+                tittle: 'Vue.js - The Progressive JavaScript Framework | Vue.js',
+                description: 'Approachable. Builds on top of standard HTML, CSS and JavaScript with intuitive API and world-class documentation. · Performant. Truly reactive, compiler- ...'
+            },
+            {
+                id:Symbol(),
+                img: 'https://clickysoft.com/wp-content/uploads/2023/03/1-4.jpg',
+                name: 'React',
+                url: 'https://react.dev/',
+                tittle: 'React',
+                description: 'React is a community. It is a place where you can ask for help, find opportunities, and meet new friends. You will meet both developers and designers, beginners ...'
+            },
+            {
+                id:Symbol(),
+                img: 'https://www.freecodecamp.org/news/content/images/2023/05/2048px-Angular_full_color_logo.svg.png',
+                name: 'Angular',
+                url: 'https://angular.io/',
+                tittle: 'Angular.js',
+                description: 'Angular is a TypeScript-based, free and open-source single-page web application framework led by the Angular Team at Google and by a community of ...'
+            }
+        ]
+        const { createApp } = Vue
+        const app = createApp({
+            computed: {
+                frameworksList(){
+                    return frameworks
+                }
+            }
+
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

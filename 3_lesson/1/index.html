@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            background-color: #bdaf99;
+            display: flex;
+            justify-content: center;
+        }
+
+        .wrapper {
+            width: 90%;
+        }
+
+        .task-class {
+            border-bottom: 1px solid #9A9A9A;
+        }
+        
+        .block__couples {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .block {
+            width: 30%;
+            min-height: 100px;
+            border: 1px solid black;
+
+        }
+
+        .block__checkCouples {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        p {
+            border-bottom: 1px solid black;
+        }
+
+        .btnCheck {
+            padding: 5px 10px;
+            margin: 20px 0;
+        }
+
+        .block__check {
+            width: 50%;
+            padding: 5px;
+            margin: 5px 0 5px 5px;
+            cursor: pointer;
+        }
+
+        .block__check:hover {
+            border: 1px solid blue;
+            padding: 4px 0 4px 4px;
+        }
+
+        .chooseUser {
+            border: 1px solid blue;
+            padding: 4px 0 4px 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <p class="task-class">Задача 6. Пари для танців. Поступово вибираємо хлопця, дівчину і додаємо у обрані пари.
+            Пару можна видалити. Поки
+            не вибрано хлопця і дівчину кнопка «Додати» заблокована. Якщо не вистачає хлопців або дівчат вибір також
+            блокується.</p>
+
+        <div id="app">
+            <div class="block__couples">
+                <div class="block">
+                    <p>Хлопці</p>
+                    <div class="block__check" :class="isUserBoyChoose(index)" v-for="(boyName,index) in boysList"
+                        key="index" @click="chooseBoy(index)">
+                        {{boyName}}
+                    </div>
+                </div>
+                <div class="block">
+                    <p>Дівчата</p>
+                    <div class="block__check" :class="isUserGirlChoose(index)" v-for="(girlName, index) in girlsList"
+                        key="index" @click="chooseGirl(index)">
+                        {{girlName}}
+                    </div>
+                </div>
+            </div>
+            <div class="block__checkCouples">
+                <button class="btnCheck" :disabled="disableBtn" @click="createCouple">Додати</button>
+                <div class="block">
+                    <p>Обрані пари</p>
+                    <div class="block__check" v-for="(couple,index) in coupleForDance" key="index">
+                        {{couple}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const { createApp } = Vue
+
+
+
+
+        const app = createApp({
+            data() {
+                return {
+                    boysList: [
+                        'Степан',
+                        'Роман',
+                        'Андрій',
+                        'Олег',
+                    ],
+                    girlsList: [
+                        'Оксана',
+                        'Ольга',
+                        'Ірина',
+                        'Тетяна',
+                    ],
+                    // Запамятовую обраного хлопця 
+                    isBoyChoose: false,
+                    selectedBoyIndex: null,
+                    // Запамятовую обрану дівчину 
+                    isGirlChoose: false,
+                    selectedGirlIndex: null,
+                    // Створена пара
+                    coupleForDance: []
+                }
+            },
+            computed: {
+                // Показує і приховує кнопку
+                disableBtn() {
+                    if (this.isGirlChoose && this.isBoyChoose) {
+                        return false
+                    }
+                    else
+                        return true
+                }
+            },
+            methods: {
+                chooseBoy(index) {
+                    this.isBoyChoose = true
+                    this.selectedBoyIndex = index
+                },
+                // Додає рамку до вибраного хлопця
+                isUserBoyChoose(index) {
+                    return index === this.selectedBoyIndex ? 'chooseUser' : ''
+                },
+
+                chooseGirl(index) {
+                    this.isGirlChoose = true
+                    this.selectedGirlIndex = index
+                },
+                // Додає  рамку до вибраної дівчини
+                isUserGirlChoose(index) {
+                    return index === this.selectedGirlIndex ? 'chooseUser' : ''
+                },
+                createCouple() {
+                    // Кидаю в масив пару
+                    this.coupleForDance.push(this.boysList[this.selectedBoyIndex] + ` - ` + this.girlsList[this.selectedGirlIndex])
+                    // Видаляю з масивів вибраних користувачів
+                    this.boysList.splice(this.selectedBoyIndex, 1)
+                    this.girlsList.splice(this.selectedGirlIndex, 1)
+                    // Обнуляю усі значення
+                    this.isBoyChoose = this.isGirlChoose = false
+                    this.selectedBoyIndex = this.selectedGirlIndex = null
+                }
+            }
+        }).mount('#app')
+
+    </script>
+</body>
+
+</html>

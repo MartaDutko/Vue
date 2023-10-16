@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body{
+            background: rgb(250, 235, 215);
+            background: linear-gradient(90deg, rgba(250, 235, 215, 1) 64%, rgba(0, 0, 0, 0.455641631652661) 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <p>Вивести список як маркований список з елементами у форматі (name: salary)</p>
+    <div id="app">
+        <ul>
+            <li v-for="(worker, index) in workersList" key="worker.id"> {{worker.name}}:{{worker.salary}}</li>
+        </ul>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        const workers = [
+            {
+                id:'111',
+                name:'Ivanov',
+                salary:1000
+            },
+            {
+                id:'112',
+                name:'Petrow',
+                salary:1500
+            },
+            {
+                id:'113',
+                name:'Sidorow',
+                salary:1200
+            },
+        ]
+        const app = createApp({
+            computed:{
+                workersList(){
+                    return workers
+                }
+            }
+
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

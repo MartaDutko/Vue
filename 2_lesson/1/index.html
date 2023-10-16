@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body{
+            background: rgb(250, 235, 215);
+            background: linear-gradient(90deg, rgba(250, 235, 215, 1) 64%, rgba(0, 0, 0, 0.455641631652661) 100%);
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wrapper button {
+            width: 10%;
+        }
+
+        /*  */
+        .successfulLogin::before {
+            content: '😉';
+        }
+
+        .reservedUser {
+            color: blue;
+        }
+
+        .otherUsers {
+            color: red;
+        }
+
+        /*  */
+    </style>
+</head>
+
+<body>
+    <p>Задача 1. Вводимо логіна і пароль. Якщо логін вірний відображаємо смайл. Якщо ні, то:</p>
+    <ol>
+        <li>якщо логін = Іван – колір повідомлення про помилку синій</li>
+        <li> якщо хтось інший, то колір повідомлення червоний</li>
+    </ol>
+
+
+    <div id="app">
+        <div class="wrapper">
+            <label>Loggin
+                <input type="text" v-model="loggin">
+            </label>
+            <label>Password
+                <input type="password" v-model="password">
+            </label>
+            <button @click="checkUser">Go</button>
+            <div :class="statysColor">{{statusText}}</div>
+        </div>
+
+    </div>
+    <script>
+        const { createApp } = Vue
+        // Зарезервоване ім'я Іван'
+        const reservedName = 'Іван'.toLowerCase()
+        // Масив зареєстрованих користувачів
+        const authorizedUsers = [
+            {
+                loggin: 'user1',
+                password: '1234'
+            },
+            {
+                loggin: 'user2',
+                password: '5678'
+            },
+            {
+                loggin: 'user3',
+                password: '9102'
+            }
+        ]
+
+        const app = createApp({
+            data() {
+                return {
+                    loggin: null,
+                    password: null,
+                    resultCheckUser: null, 
+                    isReservedUser: false
+                }
+            },
+            computed: {
+                statysColor() {
+                    if (this.resultCheckUser===true) return 'successfulLogin'
+                    else if (this.isReservedUser) return 'reservedUser'
+                    else return 'otherUsers'
+                },
+                statusText() {
+                    if (this.isReservedUser || this.resultCheckUser === false) 
+                        return 'Не вірно'
+                    else 
+                        return ''
+                }
+            },
+            methods: {
+                checkUser() { 
+                    if (this.loggin) {
+                        // Приводжу логін до нижнього регістра
+                        const loggin = this.loggin.toLowerCase()
+                        // Якщо зарезервоване ім'я введене
+                        if (loggin === reservedName) this.isReservedUser = true
+                        else {
+                            const user = authorizedUsers.find((el) => el.loggin === loggin && el.password === this.password)
+                            if (user) this.resultCheckUser = true
+                            else this.resultCheckUser = false
+                        }
+                    }
+                }
+            }
+        }).mount('#app')
+
+    </script>
+</body>
+
+</html>

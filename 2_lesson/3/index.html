@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            background: rgb(250, 235, 215);
+            background: linear-gradient(90deg, rgba(250, 235, 215, 1) 64%, rgba(0, 0, 0, 0.455641631652661) 100%);
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product__block {
+            width: 30%;
+            display: flex;
+            padding-top: 5%;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid gray;
+            border-radius: 10px;
+            box-shadow: 3px 5px 15px grey;
+        }
+
+        img {
+            max-width: 30%;
+        }
+
+        button {
+            padding: 2%;
+            border-radius: 5px;
+            border: 1px solid white;
+            color: rgb(67, 67, 67);
+        }
+
+        /*  */
+        .correctUserAnswer {
+            border: 1px solid green;
+        }
+
+        .unCorrectUserAnswer {
+            border: 1px solid red;
+
+        }
+    </style>
+</head>
+
+<body>
+    <p>Задача 3. Елемент тренажера англійської. Виводимо зображення елемента і слово. Користувач вводить відповідь. Якщо
+        вірно – відтворюємо фразу «Добре. Молодець!» (і додаємо зелену рамку до елемента), якщо ні - то відтворюємо
+        фразу «Невірно, спробуйте ще раз» (і додаємо червону рамку).</p>
+
+    <div id="app">
+        <div class="wrapper">
+            <div class="product__block" :class="statusColor">
+                <img :src="randomListElement.img"> <br>
+                <p>{{randomListElement.productName}}</p>
+                <p>Ваша відповідь:</p>
+                <input type="text" v-model="userUnswer">
+                <br>
+                <button @click="checkUserTranslation">Check translation</button>
+                <p>{{statusAnswer}}</p>
+                <div v-if="showNextQuestion">
+                    <button @click="generateNextQuestion">Next question</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        productsList = [
+            {
+                id: Symbol(),
+                productName: 'Крісло',
+                img: 'https://cdn4.jysk.com/getimage/wd2.medium/201611',
+                englishTranslation: 'chair'
+            },
+            {
+                id: Symbol(),
+                productName: 'Ліжко',
+                img: 'https://cdn1.jysk.com/getimage/wd2.medium/144516',
+                englishTranslation: 'bed'
+            },
+            {
+                id: Symbol(),
+                productName: 'Дзеркало',
+                img: 'https://cdn4.jysk.com/getimage/wd2.medium/126765',
+                englishTranslation: 'mirror'
+            },
+            {
+                id: Symbol(),
+                productName: 'Подушка',
+                img: 'https://cdn2.jysk.com/getimage/wd2.medium/115636',
+                englishTranslation: 'pillow'
+            },
+            {
+                id: Symbol(),
+                productName: 'Столик ',
+                img: 'https://cdn2.jysk.com/getimage/wd2.medium/185384',
+                englishTranslation: 'table'
+            }
+        ]
+        const { createApp } = Vue
+
+        const app = createApp({
+            data() {
+                return {
+                    userUnswer: null,
+                    statusAnswer: null,
+                    statusColorAnswer: null,
+                    showNextQuestion: false,
+                    randomListElement: this.randomElement()
+                }
+            },
+            computed: {
+                statusColor() {
+                    if (this.statusColorAnswer) return 'correctUserAnswer'
+                    else if (this.statusColorAnswer === false) return 'unCorrectUserAnswer'
+                    else return null
+                }
+            },
+            methods: {
+                randomElement() {
+                    let randIndex = Math.floor(Math.random() * productsList.length);
+                    return productsList[randIndex]
+                },
+                checkUserTranslation() {
+                    if (this.userUnswer && this.userUnswer.toLowerCase() === this.randomListElement.englishTranslation) {
+                        this.statusAnswer = 'Добре. Молодець!'
+                        this.statusColorAnswer = true
+                        this.showNextQuestion = true
+                    }
+                    else {
+                        this.statusAnswer = 'Невірно, спробуйте ще раз'
+                        this.statusColorAnswer = false
+                        this.showNextQuestion = false
+                    }
+                },
+                generateNextQuestion() {
+                    // Скидання всіх значень
+                    this.userUnswer = this.statusAnswer = this.statusColorAnswer = null;
+                    // Сховати кнопку "Next Question"
+                    this.showNextQuestion = false
+                    // Виклик генерації випадкового елементу
+                    this.randomListElement = this.randomElement()
+                }
+            }
+        }).mount('#app')
+
+    </script>
+</body>
+
+</html>

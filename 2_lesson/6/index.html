@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            background: rgb(250, 235, 215);
+            background: linear-gradient(90deg, rgba(250, 235, 215, 1) 64%, rgba(0, 0, 0, 0.455641631652661) 100%);
+        }
+
+        .wrapper {
+            width: 80%;
+            display: flex;
+            padding: 2%;
+            justify-content: space-around;
+        }
+
+        .block {
+            border: 1px solid black;
+        }
+
+        .block__menu {
+            text-align: center;
+            min-width: 25%;
+            min-height: 100px;
+
+        }
+
+        .menu {
+            text-align: center;
+            margin: 2%;
+        }
+        .block__dish{
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Задача 6. Задача. На кухню поступають замовлення. Спочатку ми додаємо їх у список “Очікують на виконання”, якщо
+        повар береться робити — замовлення переходить у список “Виконуються”, якщо замовлення виконано — переходить у
+        список “Готові до виносу”. Якщо натиснути на “Подано” - страва зникає з таблиці</p>
+    <hr>
+    <div id="app">
+        <div class="menu">
+            <label>Нова замовлена страва
+                <input type="text" v-model="orderedDish">
+            </label>
+            <button @click="addDish">Додати</button>
+        </div>
+        <div class="wrapper block">
+            <div class="block__menu block">
+                <div class="block">Очікується на виконання</div>
+                <div class="block__dish block" v-for="(awaitingDish,index) in awaitingDishList" key="index">
+                    <span>{{awaitingDish}}</span>
+                    <button @click="goCook(index)">Готувати</button>
+                </div>
+            </div>
+            <div class="block__menu block">
+                <div class="block">Виконується</div>
+                <div class="block__dish block" v-for="(executingDish,index) in executingDishList" key="index">
+                    <span>{{executingDish}}</span>
+                    <button @click="confirmPrepared(index)">Приготовлено</button>
+                </div>
+            </div>
+            <div class="block__menu block">
+                <div class="block">Готові до виносу</div>
+                <div class="block__dish block" v-for="(readyDish,index) in readyDishList" key="index">
+                    <span>{{readyDish}}</span>
+                    <button @click="confirmReady(index)">Приготовлено</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const { createApp } = Vue
+        const app = createApp({
+            data() {
+                return {
+                    orderedDish: null,
+                    awaitingDishList: [],
+                    executingDishList: [],
+                    readyDishList: []
+                }
+            },
+            methods: {
+                addDish() {
+                    if (this.orderedDish){
+                        this.awaitingDishList.push(this.orderedDish)
+                        this.orderedDish=null
+                    }
+                },
+                goCook(index){
+                    let element = this.awaitingDishList[index]
+                    this.executingDishList.push(element)
+                    this.awaitingDishList.splice(index,1)
+                },
+                confirmPrepared(index){
+                    let element = this.executingDishList[index]
+                    this.readyDishList.push(element)
+                    this.executingDishList.splice(index,1)
+                },
+                confirmReady(index){
+                    this.readyDishList.splice(index,1)
+                }
+            }
+
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

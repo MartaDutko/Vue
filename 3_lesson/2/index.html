@@ -4,32 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Автомобілі</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            width: 100%;
+        }
 
+        .wrapper {
+            width: 80%;
+            margin: 0 auto;
+            border: 1px solid black;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .block {
+            padding: 30px;
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        label {
+            margin: 0 20px 0 0;
+        }
+
+        select {
+            cursor: pointer;
+            width: 15%;
+        }
+
+        button {
+            color: rgb(244, 242, 238);
+            background-color: rgb(21, 170, 21);
+            border: 0;
+            border-radius: 5px;
+            padding: 5px 15px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
+    <p>Задача 8. Дано список автомобілів (марка, рік випуску, ціна). Сформувати елементи для фільтрування з
+        використанням випадаючого списку (контент цих випадаючих списків сформувати у залежності від переданого списку).
+    </p>
+    <div id="app">
+        <div class="wrapper">
+            <div class="block">
+                <label>Mарка
+                    <select name="carBrand" v-model="userSerchMarck">
+                        <option disabled>Виберіть марку автомобіля</option>
+                        <option v-for="carMarck,index in carsMarck" :key="index">{{carMarck}}</option>
+                    </select>
+                </label>
+
+                <label>Piк випуску
+                    <select name="carYear" v-model="userSerchYearCar">
+                        <option disabled>Виберіть рік випуску автомобіля</option>
+                        <option v-for="carYear,index in carsYear" :key="index">{{carYear}}</option>
+                    </select>
+                </label>
+            </div>
+            <div class="block">
+                <button @click="searchUserCars">Пошук</button>
+                <div v-if="resaltUserCars==false">{{messageError}}</div>
+                <div v-else v-for="car in resaltUserCars" :key="car.id">{{car.marka}} - {{car.year}}p. - {{car.price}}$
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         const { createApp } = Vue
+
+        const cars = [
+            { id: Symbol(), marka: 'Audi', year: '2009', price: '5000' },
+            { id: Symbol(), marka: 'Opel', year: '2008', price: '3000' },
+            { id: Symbol(), marka: 'Opel', year: '2009', price: '5000' },
+            { id: Symbol(), marka: 'Mazda', year: '2008', price: '8000' },
+            { id: Symbol(), marka: 'Wolksvagen', year: '2009', price: '7000' },
+            { id: Symbol(), marka: 'Opel', year: '2010', price: '4500' },
+            { id: Symbol(), marka: 'Scoda', year: '2007', price: '3000' },
+            { id: Symbol(), marka: 'Audi', year: '2011', price: '10000' },
+            { id: Symbol(), marka: 'Audi', year: '2010', price: '8000' },
+            { id: Symbol(), marka: 'Scoda', year: '2005', price: '3000' },
+            { id: Symbol(), marka: 'BMW', year: '2013', price: '10000' },
+            { id: Symbol(), marka: 'Chevrolet', year: '2013', price: '8000' },
+            { id: Symbol(), marka: 'Audi', year: '2015', price: '15000' },
+            { id: Symbol(), marka: 'BMW', year: '2005', price: '8000' },
+            { id: Symbol(), marka: 'Scoda', year: '2015', price: '10000' },
+        ]
 
         const app = createApp({
             data() {
                 return {
-
+                    userSerchMarck: null,
+                    userSerchYearCar: null,
+                    resaltUserCars: [],
+                    messageError: 'Not found car'
                 }
             },
             computed: {
-
+                carsList() {
+                    return cars
+                },
+                carsMarck() {
+                    return new Set(this.carsList.map(car => car.marka))
+                },
+                carsYear() {
+                    return new Set(this.carsList.map(car => car.year))
+                },
             },
             methods: {
-                checkUser() {
-
+                searchUserCars() {
+                    if (this.userSerchMarck && this.userSerchYearCar) {
+                        this.resaltUserCars = this.carsList.filter(el => el.marka === this.userSerchMarck && el.year === this.userSerchYearCar);
+                    } else {
+                        this.resaltUserCars = [];
+                    }
                 }
             }
         }).mount('#app')
-
     </script>
-</body>
-
-</html>

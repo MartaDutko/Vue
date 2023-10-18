@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Працівники</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            width: 100%;
+        }
+
+        .wrapper {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .block{
+            width: 30%;
+            border: 1px solid black;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Задача 7. Динамічний пошук. Є список працівників і поле пошуку. При введенні відображаються усі, які містять вказаний фрагмент</p>
+    <div id="app">
+        <div class="wrapper">
+            <div class="block">
+                <label>Ім'я
+                    <input type="text" v-model="searchUser">
+                </label>
+                <div>
+                    <div v-for="employee in filteredEmployees" :key="employee.id">{{employee.name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const { createApp } = Vue
+
+        const app = createApp({
+            data() {
+                return {
+                    employeeList:[
+                        {
+                            id:Symbol(),
+                            name:'Іванов С.П'
+                        },
+                        {
+                            id:Symbol(),
+                            name:'Петров М.П'
+                        },
+                        {
+                            id:Symbol(),
+                            name:'Павлов Л.Т'
+                        },
+                        {
+                            id:Symbol(),
+                            name:'Тарасов Т.О'
+                        }
+                    ],
+                    searchUser:null,
+                }
+            },
+            computed: {
+                filteredEmployees(){
+                    if(!this.searchUser) return this.employeeList
+                    else{
+                        return this.employeeList.filter((el)=>el.name.toLowerCase().includes(this.searchUser.toLowerCase()))
+                    }
+                }
+            }
+        }).mount('#app')
+    </script>
